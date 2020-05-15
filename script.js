@@ -175,6 +175,7 @@ function draw(){
 }
 
 record_DOM.addEventListener("click",record,false);
+record_DOM.addEventListener("touchend",record,false);
 
 function record(){
 	record_DOM.innerText = "Recording not ready.";
