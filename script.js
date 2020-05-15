@@ -34,7 +34,7 @@ let count_DOM = document.getElementById("countdown");
 let reset_DOM = document.getElementById("reset");
 let countdown = Number(count_DOM.innerText.toString());
 let countRate = (isMobile.any())? 15 : 20;
-let predictRate = (isMobile.any())? 6 : 2;
+let predictRate = (isMobile.any())? 6 : 1;
 
 let count = 0;
 let predict_count = 0;
