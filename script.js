@@ -179,7 +179,7 @@ function reset(){
 
 async function predict(){
 	let input_size = 320;
-	if(isMobile.any()) input_size = 160;
+	if(isMobile.any()) input_size = 128;
 	const options = new faceapi.TinyFaceDetectorOptions({ inputSize: input_size })
 	const video = document.getElementsByTagName('video')[0];
 	const displaySize = { width: cam_width, height: cam_height };
