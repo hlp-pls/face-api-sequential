@@ -33,7 +33,11 @@ let instruction_DOM = document.getElementById("instructions");
 let count_DOM = document.getElementById("countdown");
 let reset_DOM = document.getElementById("reset");
 let countdown = Number(count_DOM.innerText.toString());
+let countRate = (isMobile.any())? 5 : 10;
+let predictRate = (isMobile.any())? 5 : 2;
+
 let count = 0;
+let predict_count = 0;
 let stage = 0;
 let ease = 0.2;
 let dx,dy;
@@ -106,16 +110,21 @@ function draw(){
 		countdown = Number(count_DOM.innerText.toString());
 
 		if(countdown>0){
-			predict();
+			predict_count++;
+
+			if(predict_count>predictRate){
+				predict();
+				predict_count = 0;
+			}
 		}
 
 		if(landmark_points){
 
-			
+
 
 			count++;
 
-			if(count>10){
+			if(count>countRate){
 				count = 0;
 				if(countdown>0){
 					count_DOM.innerText = countdown - 1 + "";
