@@ -184,6 +184,7 @@ reset_DOM.addEventListener("click",reset,false);
 
 function reset(){
 	count_DOM.innerText = "10";
+	stage = 0;
 }
 
 async function predict(){
