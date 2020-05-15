@@ -31,10 +31,10 @@ let scr_scale;
 
 let instruction_DOM = document.getElementById("instructions");
 let count_DOM = document.getElementById("countdown");
-let reset_DOM = document.getElementById("reset");
-let countdown = Number(count_DOM.innerText.toString());
-let countRate = (isMobile.any())? 15 : 20;
-let predictRate = (isMobile.any())? 6 : 1;
+let record_DOM = document.getElementById("record");
+//let countdown = Number(count_DOM.innerText.toString());
+//let countRate = (isMobile.any())? 15 : 20;
+let predictRate = (isMobile.any())? 10 : 3;
 
 let count = 0;
 let predict_count = 0;
@@ -109,69 +109,63 @@ function draw(){
 
 		countdown = Number(count_DOM.innerText.toString());
 
-		if(countdown>0){
-			predict_count++;
+		predict_count++;
 
-			if(predict_count>predictRate){
-				predict();
-				predict_count = 0;
-			}
+		if(predict_count>predictRate){
+			predict();
+			predict_count = 0;
 		}
+		
 
 		if(landmark_points){
 
 
-
+			/*
 			count++;
 
 			if(count>countRate){
 				count = 0;
 				if(countdown>0){
-					count_DOM.innerText = countdown - 1 + "";
+					//count_DOM.innerText = countdown - 1 + "";
+				}
+			}
+			*/
+
+			if(stage==0){
+				dx = landmark_points[0]._x;
+				dy = landmark_points[0]._y;
+			}
+				
+			dx += (landmark_points[stage]._x - dx) * ease;
+			dy += (landmark_points[stage]._y - dy) * ease;
+
+			if(dist(dx,dy,landmark_points[stage]._x,landmark_points[stage]._y)<2.0){
+				stage++;
+				if(stage>=landmark_points.length){
+					stage = 0;
 				}
 			}
 
+			let ex = -cam_width/2+dx;
+			let ey = -cam_height/2+dy;
+
+			ellipse(ex,ey,20,20);
+
+			beginShape();
+			for(let i=0; i<stage; i++){
+				let x = -cam_width/2+landmark_points[i]._x;
+				let y = -cam_height/2+landmark_points[i]._y;
+				ellipse(x,y,4,4);
+				vertex(x,y);
+			}
+			vertex(ex,ey);
+			endShape();
+				
+
 			if(countdown>0){
-				beginShape();
-				for(let i=0; i<landmark_points.length; i++){
-					let x = -cam_width/2+landmark_points[i]._x;
-					let y = -cam_height/2+landmark_points[i]._y;
-					ellipse(x,y,4,4);
-					vertex(x,y);
-				}
-				endShape();
-
-				dx = landmark_points[stage]._x;
-				dy = landmark_points[stage]._y;
-
+				
 			}else{
-				instruction_DOM.innerText = "Drawing face!";
-				
-				dx += (landmark_points[stage]._x - dx) * ease;
-				dy += (landmark_points[stage]._y - dy) * ease;
-
-				if(dist(dx,dy,landmark_points[stage]._x,landmark_points[stage]._y)<0.1){
-					stage++;
-					if(stage>=landmark_points.length){
-						stage = 0;
-					}
-				}
-
-				let ex = -cam_width/2+dx;
-				let ey = -cam_height/2+dy;
-
-				ellipse(ex,ey,20,20);
-
-				beginShape();
-				for(let i=0; i<stage; i++){
-					let x = -cam_width/2+landmark_points[i]._x;
-					let y = -cam_height/2+landmark_points[i]._y;
-					ellipse(x,y,4,4);
-					vertex(x,y);
-				}
-				vertex(ex,ey);
-				endShape();
-				
+				//instruction_DOM.innerText = "Drawing face, please stay still.";
 			}
 
 		}
@@ -180,11 +174,10 @@ function draw(){
 	//console.log(landmark_points);
 }
 
-reset_DOM.addEventListener("click",reset,false);
+record_DOM.addEventListener("click",record,false);
 
-function reset(){
-	count_DOM.innerText = "10";
-	stage = 0;
+function record(){
+	record_DOM.innerText = "Recording not ready.";
 }
 
 async function predict(){
