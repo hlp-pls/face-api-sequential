@@ -115,7 +115,7 @@ function draw(){
 
 			count++;
 
-			if(count>13){
+			if(count>10){
 				count = 0;
 				if(countdown>0){
 					count_DOM.innerText = countdown - 1 + "";
